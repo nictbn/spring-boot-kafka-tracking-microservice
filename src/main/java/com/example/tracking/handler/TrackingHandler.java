@@ -15,7 +15,8 @@ public class TrackingHandler {
     @KafkaListener(
             id = "trackingConsumerClient",
             topics = "dispatch.tracking",
-            groupId = "dispatch.tracking.consumer"
+            groupId = "dispatch.tracking.consumer",
+            containerFactory = "kafkaListenerContainerFactory"
     )
     public void listen(DispatchPreparing payload) {
         log.info("Received message payload: " + payload);
