@@ -1,5 +1,6 @@
 package com.example.tracking.handler;
 
+import com.example.tracking.message.DispatchPreparing;
 import com.example.tracking.service.TrackingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,7 @@ public class TrackingHandler {
             topics = "dispatch.tracking",
             groupId = "dispatch.tracking.consumer"
     )
-    public void listen(String payload) {
+    public void listen(DispatchPreparing payload) {
         log.info("Received message payload: " + payload);
         trackingService.process(payload);
     }

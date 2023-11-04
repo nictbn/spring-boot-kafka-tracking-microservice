@@ -1,13 +1,16 @@
 package com.example.tracking.handler;
 
+import com.example.tracking.message.DispatchPreparing;
 import com.example.tracking.service.TrackingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.UUID;
+
+import static com.example.tracking.util.TestEventData.buildDispatchPreparingEvent;
 import static org.mockito.Mockito.*;
 
 class TrackingHandlerTest {
-    public static final String TEST_STRING = "Test";
     TrackingHandler trackingHandler;
     TrackingService trackingServiceMock;
 
@@ -19,7 +22,8 @@ class TrackingHandlerTest {
 
     @Test
     void processSuccessful() {
-        trackingHandler.listen(TEST_STRING);
-        verify(trackingServiceMock, times(1)).process(TEST_STRING);
+        DispatchPreparing event = buildDispatchPreparingEvent(UUID.randomUUID());
+        trackingHandler.listen(event);
+        verify(trackingServiceMock, times(1)).process(event);
     }
 }
