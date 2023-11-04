@@ -2,7 +2,7 @@ package com.example.tracking.integration;
 
 import com.example.tracking.TrackingConfiguration;
 import com.example.tracking.message.DispatchPreparing;
-import com.example.tracking.message.TrackingStatus;
+import com.example.tracking.message.TrackingStatusUpdated;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -63,7 +63,7 @@ public class TrackingIntegrationTest {
     public static class KafkaTestListener {
         AtomicInteger trackingStatusMessageCounter = new AtomicInteger(0);
         @KafkaListener(groupId = "kafkaIntegrationTest", topics = TRACKING_STATUS_TOPIC)
-        void receiveTrackingStatusMessage(@Payload TrackingStatus payload) {
+        void receiveTrackingStatusMessage(@Payload TrackingStatusUpdated payload) {
             log.debug("Received TrackingStatus: " + payload);
             trackingStatusMessageCounter.incrementAndGet();
         }
@@ -78,8 +78,8 @@ public class TrackingIntegrationTest {
 
     @Test
     public void testFlow() throws Exception {
-        DispatchPreparing orderCreated = buildDispatchPreparingEvent(randomUUID());
-        sendMessage(DISPATCH_TRACKING_TOPIC, orderCreated);
+        DispatchPreparing dispatchPreparing = buildDispatchPreparingEvent(randomUUID());
+        sendMessage(DISPATCH_TRACKING_TOPIC, dispatchPreparing);
         await()
                 .atMost(3, TimeUnit.SECONDS)
                 .pollDelay(100, TimeUnit.MILLISECONDS)
