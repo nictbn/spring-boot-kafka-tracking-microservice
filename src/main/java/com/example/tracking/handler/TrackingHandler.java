@@ -20,6 +20,11 @@ public class TrackingHandler {
     )
     public void listen(DispatchPreparing payload) {
         log.info("Received message payload: " + payload);
-        trackingService.process(payload);
+        try {
+            trackingService.process(payload);
+        } catch (Exception e) {
+            log.error("Processing failure", e);
+        }
+
     }
 }

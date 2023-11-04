@@ -2,6 +2,7 @@ package com.example.tracking.handler;
 
 import com.example.tracking.message.DispatchPreparing;
 import com.example.tracking.service.TrackingService;
+import com.example.tracking.util.TestEventData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,9 +22,17 @@ class TrackingHandlerTest {
     }
 
     @Test
-    void processSuccessful() {
+    void processSuccessful() throws Exception {
         DispatchPreparing event = buildDispatchPreparingEvent(UUID.randomUUID());
         trackingHandler.listen(event);
         verify(trackingServiceMock, times(1)).process(event);
+    }
+
+    @Test
+    void processException() throws Exception {
+        DispatchPreparing testEvent = buildDispatchPreparingEvent(UUID.randomUUID());
+        doThrow(new RuntimeException("Service failure")).when(trackingServiceMock).process(testEvent);
+        trackingHandler.listen(testEvent);
+        verify(trackingServiceMock, times(1)).process(testEvent);
     }
 }
