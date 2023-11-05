@@ -25,7 +25,7 @@ public class TrackingService {
     public void process(String key, DispatchCompleted dispatchCompleted) throws Exception {
         TrackingStatusUpdated trackingStatusUpdated = TrackingStatusUpdated.builder()
                 .orderId(dispatchCompleted.getOrderId())
-                .status(TrackingStatus.PREPARING)
+                .status(TrackingStatus.COMPLETED)
                 .build();
         kafkaTemplate.send(TRACKING_STATUS_TOPIC, key, trackingStatusUpdated).get();
     }
