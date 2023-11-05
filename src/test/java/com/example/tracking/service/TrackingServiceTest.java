@@ -1,7 +1,7 @@
 package com.example.tracking.service;
 
-import com.example.tracking.message.DispatchPreparing;
-import com.example.tracking.message.TrackingStatusUpdated;
+import com.example.message.DispatchPreparing;
+import com.example.message.TrackingStatusUpdated;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.kafka.core.KafkaTemplate;

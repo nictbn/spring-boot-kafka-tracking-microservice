@@ -1,4 +1,4 @@
-package com.example.tracking.message;
+package com.example.message;
 
 public enum TrackingStatus {
     PREPARING

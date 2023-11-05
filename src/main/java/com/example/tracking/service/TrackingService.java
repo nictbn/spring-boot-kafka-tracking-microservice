@@ -1,8 +1,8 @@
 package com.example.tracking.service;
 
-import com.example.tracking.message.DispatchPreparing;
-import com.example.tracking.message.TrackingStatus;
-import com.example.tracking.message.TrackingStatusUpdated;
+import com.example.message.DispatchPreparing;
+import com.example.message.TrackingStatus;
+import com.example.message.TrackingStatusUpdated;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;

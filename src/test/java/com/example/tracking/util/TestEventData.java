@@ -1,6 +1,6 @@
 package com.example.tracking.util;
 
-import com.example.tracking.message.DispatchPreparing;
+import com.example.message.DispatchPreparing;
 
 import java.util.UUID;
 

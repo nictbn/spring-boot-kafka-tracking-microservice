@@ -1,4 +1,4 @@
-package com.example.tracking.message;
+package com.example.message;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,9 @@ import java.util.UUID;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class DispatchPreparing {
+@NoArgsConstructor
+public class TrackingStatusUpdated {
     UUID orderId;
+    TrackingStatus status;
 }

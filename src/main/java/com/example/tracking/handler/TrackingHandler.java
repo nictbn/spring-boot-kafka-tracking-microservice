@@ -1,6 +1,6 @@
 package com.example.tracking.handler;
 
-import com.example.tracking.message.DispatchPreparing;
+import com.example.message.DispatchPreparing;
 import com.example.tracking.service.TrackingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

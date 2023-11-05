@@ -1,8 +1,7 @@
 package com.example.tracking.handler;
 
-import com.example.tracking.message.DispatchPreparing;
+import com.example.message.DispatchPreparing;
 import com.example.tracking.service.TrackingService;
-import com.example.tracking.util.TestEventData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

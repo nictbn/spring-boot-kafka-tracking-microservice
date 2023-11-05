@@ -1,6 +1,5 @@
 package com.example.tracking;
 
-import com.example.tracking.message.DispatchPreparing;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -21,6 +20,7 @@ import java.util.Map;
 @Configuration
 @ComponentScan(basePackages = {"com.example"})
 public class TrackingConfiguration {
+    private static String TRUSTED_PACKAGES = "com.example.message";
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory(ConsumerFactory<String, Object> consumerFactory) {
         ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
@@ -34,9 +34,8 @@ public class TrackingConfiguration {
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
         config.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class);
-        config.put(JsonDeserializer.VALUE_DEFAULT_TYPE, DispatchPreparing.class.getCanonicalName());
-        config.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, false);
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        config.put(JsonDeserializer.TRUSTED_PACKAGES, TRUSTED_PACKAGES);
         return new DefaultKafkaConsumerFactory<>(config);
     }
 

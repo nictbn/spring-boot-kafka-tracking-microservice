@@ -1,8 +1,8 @@
 package com.example.tracking.integration;
 
 import com.example.tracking.TrackingConfiguration;
-import com.example.tracking.message.DispatchPreparing;
-import com.example.tracking.message.TrackingStatusUpdated;
+import com.example.message.DispatchPreparing;
+import com.example.message.TrackingStatusUpdated;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
