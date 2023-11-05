@@ -5,9 +5,8 @@ import com.example.tracking.service.TrackingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
-
 import static com.example.tracking.util.TestEventData.buildDispatchPreparingEvent;
+import static java.util.UUID.randomUUID;
 import static org.mockito.Mockito.*;
 
 class TrackingHandlerTest {
@@ -22,16 +21,18 @@ class TrackingHandlerTest {
 
     @Test
     void processSuccessful() throws Exception {
-        DispatchPreparing event = buildDispatchPreparingEvent(UUID.randomUUID());
-        trackingHandler.listen(event);
-        verify(trackingServiceMock, times(1)).process(event);
+        String key = randomUUID().toString();
+        DispatchPreparing event = buildDispatchPreparingEvent(randomUUID());
+        trackingHandler.listen(0, key, event);
+        verify(trackingServiceMock, times(1)).process(key, event);
     }
 
     @Test
     void processException() throws Exception {
-        DispatchPreparing testEvent = buildDispatchPreparingEvent(UUID.randomUUID());
-        doThrow(new RuntimeException("Service failure")).when(trackingServiceMock).process(testEvent);
-        trackingHandler.listen(testEvent);
-        verify(trackingServiceMock, times(1)).process(testEvent);
+        String key = randomUUID().toString();
+        DispatchPreparing testEvent = buildDispatchPreparingEvent(randomUUID());
+        doThrow(new RuntimeException("Service failure")).when(trackingServiceMock).process(key, testEvent);
+        trackingHandler.listen(0, key, testEvent);
+        verify(trackingServiceMock, times(1)).process(key, testEvent);
     }
 }

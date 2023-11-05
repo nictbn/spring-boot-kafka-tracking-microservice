@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -22,6 +23,7 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -60,9 +62,11 @@ public class TrackingIntegrationTest {
         }
     }
 
+    @KafkaListener(groupId = "kafkaIntegrationTest", topics = TRACKING_STATUS_TOPIC)
     public static class KafkaTestListener {
         AtomicInteger trackingStatusMessageCounter = new AtomicInteger(0);
-        @KafkaListener(groupId = "kafkaIntegrationTest", topics = TRACKING_STATUS_TOPIC)
+
+        @KafkaHandler
         void receiveTrackingStatusMessage(@Payload TrackingStatusUpdated payload) {
             log.debug("Received TrackingStatus: " + payload);
             trackingStatusMessageCounter.incrementAndGet();
@@ -78,17 +82,19 @@ public class TrackingIntegrationTest {
 
     @Test
     public void testFlow() throws Exception {
-        DispatchPreparing dispatchPreparing = buildDispatchPreparingEvent(randomUUID());
-        sendMessage(DISPATCH_TRACKING_TOPIC, dispatchPreparing);
+        UUID orderId = randomUUID();
+        DispatchPreparing dispatchPreparing = buildDispatchPreparingEvent(orderId);
+        sendMessage(DISPATCH_TRACKING_TOPIC, orderId.toString(), dispatchPreparing);
         await()
                 .atMost(3, TimeUnit.SECONDS)
                 .pollDelay(100, TimeUnit.MILLISECONDS)
                 .until(testListener.trackingStatusMessageCounter::get, equalTo(1));
     }
 
-    private void sendMessage(String topic, Object data) throws Exception {
+    private void sendMessage(String topic, String key, Object data) throws Exception {
         kafkaTemplate.send(MessageBuilder
                 .withPayload(data)
+                .setHeader(KafkaHeaders.KEY, key)
                 .setHeader(KafkaHeaders.TOPIC, topic)
                 .build()).get();
     }
